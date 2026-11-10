@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ASCII Mirror</title>
+<style>
+body {
+  height: 100vh; /*100% of the windows height*/
+  margin: 0;
+  background: #000;
+  display: grid;
+  place-items: center; /*this and line above puts ASCII picture in the middle of the screen*/
+  overflow: hidden;  /*hides scroll bar*/
+}
+
+pre {      /*shows text exactly as typed, browser doesnt tidy it up*/
+    margin: 0;
+    color: #7CFFB2;
+    font-family: Menlo, Consolas, "Courier New", monospace;
+    line-height: 1.2;
+}
+</style>
+</head>
+
+
+<body>
+<pre id="out">Allow camera access to start :p</pre>
+
+<script>
+
+  const brightness_constant = 0.7;  
+  const COLS = 250;   // how many chars wide
+  const RAMP = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";   // chars from dark to bright
+
+
+  const out = document.getElementById("out");
+
+  const video = document.createElement("video");
+  video.playsInline = true; //play video inside browser, not fullscreen
+  video.muted = true;
+
+  // canvas: one pixel here = one character on screen
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+  let rows = 0;
+
+  //set the size
+  function resize() {
+    rows = Math.round(COLS * (video.videoHeight / video.videoWidth) * 0.5); //calculate rows from COLS to keep webcam ratio, chars are about twice as tall as wide -> use half as many rows
+    canvas.width = COLS;
+    canvas.height = rows;
+
+    ctx.setTransform(-1, 0, 0, 1, COLS, 0); //flip horizontally so it behaves like a mirror
+
+    fitText();
+  }
+
+  //finds largest font size where the picture still fits on screen
+  function fitText() {
+    const size = Math.min(innerWidth / (COLS * 0.6), innerHeight / (rows * 1.2));
+    out.style.fontSize = size + "px";
+  }
+
+  //main loop
+  function draw() {
+    
+    ctx.drawImage(video, 0, 0, COLS, rows);
+ 
+    const pixels = ctx.getImageData(0, 0, COLS, rows).data; //read color val of every pixel
+ 
+    let text = "";
+ 
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < COLS; x++) {
+  
+        const i = (x + y * COLS) * 4;
+        const red = pixels[i];
+        const green = pixels[i + 1];
+        const blue = pixels[i + 2];
+ 
+        let brightness = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
+        brightness = Math.pow(brightness, brightness_constant); //darkens shadows
+
+        const index = Math.floor(brightness * (RAMP.length - 1)); //pick a char depending on brightness
+        text += RAMP[index];
+      }
+      text += "\n";
+    }
+ 
+    out.textContent = text;
+ 
+    requestAnimationFrame(draw);
+
+  }
+
+  //start camera
+  async function start() {
+    try {
+      video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true}); //asks for camera 
+      await video.play();
+      resize();
+      addEventListener("resize", fitText); //whenever event the window is resized run fitText again
+      draw();
+    } catch (err) {
+      out.textContent = "Couldn't open the camera :((";
+    }
+  }
+
+  start();
+</script>
+</body>
+</html>
