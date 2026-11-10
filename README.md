@@ -12,3 +12,8 @@ Every frame from your webcam is shrunk down, and each pixel's brightness is swap
 4. **Brightness to character:** each pixel's brightness (0 to 1) picks a character from RAMP string.
 5. **Display:** the characters are joined into lines and shown in a `<pre>` element, which keeps spaces and line breaks exactly as written.
 6. **Loop:** `requestAnimationFrame` repeats this about 60 times a second.
+
+
+**Have fun!!!**
+<img width="2552" height="1682" alt="image" src="https://github.com/user-attachments/assets/79aceca9-bbb3-4b79-90bc-995d07bd5b34" />
+
