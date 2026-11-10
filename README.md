@@ -15,5 +15,5 @@ Every frame from your webcam is shrunk down, and each pixel's brightness is swap
 
 
 **Have fun!!!**
-<img width="2552" height="1682" alt="image" src="https://github.com/user-attachments/assets/79aceca9-bbb3-4b79-90bc-995d07bd5b34" />
+<img width="1276" height="841" alt="image" src="https://github.com/user-attachments/assets/79aceca9-bbb3-4b79-90bc-995d07bd5b34" />
 
