@@ -28,9 +28,8 @@ pre {      /*shows text exactly as typed, browser doesnt tidy it up*/
 
 <script>
 
-  const brightness_constant = 0.7;  
-  const COLS = 250;   // how many chars wide
-  const RAMP = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";   // chars from dark to bright
+  const COLS = 400;   // how many chars wide
+  const RAMP = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/*tfjrxnuvczmwqpdbkhaoXYUJCLQ0OZ#MW&8%B@$";   // chars from dark to bright
 
 
   const out = document.getElementById("out");
@@ -79,8 +78,7 @@ pre {      /*shows text exactly as typed, browser doesnt tidy it up*/
         const green = pixels[i + 1];
         const blue = pixels[i + 2];
  
-        let brightness = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
-        brightness = Math.pow(brightness, brightness_constant); //darkens shadows
+        const brightness = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
 
         const index = Math.floor(brightness * (RAMP.length - 1)); //pick a char depending on brightness
         text += RAMP[index];
