@@ -14,7 +14,7 @@ Every frame from your webcam is shrunk down, and each pixel's brightness is swap
 6. **Loop:** `requestAnimationFrame` repeats this about 60 times a second.
 
 
-**Have fun!!!**
+**Feel free to play around with the value of COLS!**
 <p align="center">
   <img width="750" alt="ASCII Mirror demo" src="https://github.com/user-attachments/assets/79aceca9-bbb3-4b79-90bc-995d07bd5b34" />
 </p>
